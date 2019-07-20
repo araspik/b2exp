@@ -1,0 +1,13 @@
+#define MESON_SYSTEM "@system@"
+#define MESON_ARCH "@arch@"
+#mesondefine MACHO
+#mesondefine ELF
+
+#ifdef ELF
+#define GLOBAL(name) _##name
+#define LOCAL(name) .L ## name
+#endif
+#ifdef MACHO
+#define GLOBAL(name) _ ## name
+#define LOCAL(name) L_. ## name
+#endif
