@@ -1,0 +1,9 @@
+Project Root
+
+bench/          Benchmarking
+include/        Headers
+src/            Implementation
+test/           Testing
+LICENSE         License text
+meson.build     Build system file
+README.md       Project description

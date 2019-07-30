@@ -1,43 +1,25 @@
 project('b2exp',
     'c',
-    default_options: [],
     license: 'GPL3',
-    meson_version: '>=0.51.0',
+    meson_version: '>=0.50.0',
     version: '0.0.1',
 )
-description = 'Base-2 exponential function'
-url = 'https://github.com/araspik/b2exp'
+project_desc = 'A base-2 exponential function.'
+project_url = 'https://github.com/araspik/b2exp'
 
-system = host_machine.system()
-if system != 'darwin' and system != 'linux'
-    error('@0@ not supported yet. Please report this!'.format(system))
-endif
+host_os = host_machine.system()
+host_cpu = host_machine.cpu_family()
 
-conf = configuration_data()
-conf.set('system', system)
-conf.set('arch', host_machine.cpu_family())
-conf.set('MACHO', system == 'darwin')
-conf.set('ELF', system == 'linux')
-configure_file(
-    input: 'config.h.in',
-    output: 'config.h',
-    configuration: conf,
-    format: 'meson',
-    install: false,
-)
+subdir('include')
+subdir('src')
+subdir('test')
+subdir('bench')
 
-incs = include_directories('.', 'include')
-lib = library('b2exp',
-    'b2exp.S',
-    include_directories: incs,
-    install: true,
-    native: false,
-)
-
-install_headers('include/b2exp.h')
-
-pkg = import('pkgconfig')
-pkg.generate(lib,
-    description: description,
-    url: url,
+import('pkgconfig').generate(
+    description: project_desc,
+    filebase: 'libb2exp',
+    libraries: [lib],
+    name: 'b2exp',
+    subdirs: 'b2exp',
+    url: project_url
 )
